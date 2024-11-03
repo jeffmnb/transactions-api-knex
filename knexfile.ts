@@ -1,17 +1,29 @@
 import { Knex } from "knex"
+import { env } from "./env"
 
 const config: { [key: string]: Knex.Config } = {
   development: {
     client: "sqlite",
     connection: {
-      filename: "./src/db/app.db",
+      filename: env.DATABASE_URL,
     },
     useNullAsDefault: true,
     migrations: {
-      directory: "./src/db/migrations",
+      directory: process.env.MIGRATIONS_URL,
+      extension: "ts",
+    },
+  },
+  production: {
+    client: "mysql",
+    connection: {
+      filename: env.DATABASE_URL,
+    },
+    useNullAsDefault: true,
+    migrations: {
+      directory: env.MIGRATIONS_URL,
       extension: "ts",
     },
   },
 }
 
-export default config
+export default config[env.NODE_ENV]
