@@ -1,4 +1,4 @@
-import { Knex } from "knex"
+import knex, { Knex } from "knex"
 import { env } from "./env"
 
 const config: { [key: string]: Knex.Config } = {
@@ -27,3 +27,5 @@ const config: { [key: string]: Knex.Config } = {
 }
 
 export default config[env.NODE_ENV]
+
+export const db = knex(config[env.NODE_ENV])
