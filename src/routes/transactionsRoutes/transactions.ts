@@ -5,9 +5,12 @@ import {
   createTransactionBodySchema,
   getSpecificTransactionParamsSchema,
 } from "./transaction.utils"
+import { getCookies } from "../../utils/getCookies/getCookies"
 
 export const transactionsRoute = async (app: FastifyInstance) => {
-  app.get("/transactions", async () => {
+  app.get("/transactions", async (req, res) => {
+    const { session_id } = getCookies({ req, res, createCookie: false })
+    if (!session_id) return res.status(401).send("Unauthorized")
     const transactions = await db("transactions").select("*")
     return { transactions }
   })
@@ -22,11 +25,19 @@ export const transactionsRoute = async (app: FastifyInstance) => {
     }
 
     const { id } = data
-    return await db("transactions").where("id", id).first()
+
+    const transaction = await db("transactions").where("id", id).first()
+
+    if (!transaction) return res.status(404).send("Transaction not found!")
+
+    return { transaction }
   })
 
   app.get("/transactions/summary", async () => {
-    return await db("transactions").sum("amount", { as: "amount" }).first()
+    const summary = await db("transactions")
+      .sum("amount", { as: "amount" })
+      .first()
+    return { summary: summary?.amount ?? 0 }
   })
 
   app.post("/transactions", async (req, res) => {
@@ -37,8 +48,11 @@ export const transactionsRoute = async (app: FastifyInstance) => {
 
     const { amount, title, type } = data
 
+    const { session_id } = getCookies({ res, req, createCookie: false })
+
     await db("transactions").insert({
       id: randomUUID(),
+      session_id: session_id,
       title,
       amount: type === "credit" ? amount : amount * -1,
     })

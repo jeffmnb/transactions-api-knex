@@ -1,7 +1,10 @@
 import fastify from "fastify"
+import cookie from "@fastify/cookie"
 import { transactionsRoute } from "./routes/transactionsRoutes/transactions"
 
 const app = fastify()
+
+app.register(cookie)
 
 app.register(transactionsRoute)
 
