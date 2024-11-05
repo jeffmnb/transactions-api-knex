@@ -4,7 +4,7 @@ import { GetCookies } from "./getCookies.types"
 export const getCookies = ({
   req,
   res,
-  createCookie, // se for true ele cria caso não tiver, se não retorna vazio mesmo
+  createCookie,
 }: GetCookies): { session_id: string | undefined } => {
   let { session_id } = req.cookies
 
