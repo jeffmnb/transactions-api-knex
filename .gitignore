@@ -2,3 +2,4 @@ node_modules
 app.db
 src/db/app.db
 .env
+app-test.db

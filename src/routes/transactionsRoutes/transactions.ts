@@ -48,7 +48,7 @@ export const transactionsRoute = async (app: FastifyInstance) => {
 
     const { amount, title, type } = data
 
-    const { session_id } = getCookies({ res, req, createCookie: false })
+    const { session_id } = getCookies({ res, req, createCookie: true })
 
     await db("transactions").insert({
       id: randomUUID(),

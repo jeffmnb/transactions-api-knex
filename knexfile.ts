@@ -13,6 +13,17 @@ const config: { [key: string]: Knex.Config } = {
       extension: "ts",
     },
   },
+  test: {
+    client: "sqlite",
+    connection: {
+      filename: env.DATABASE_TEST_URL,
+    },
+    useNullAsDefault: true,
+    migrations: {
+      directory: process.env.MIGRATIONS_URL,
+      extension: "ts",
+    },
+  },
   production: {
     client: "mysql",
     connection: {

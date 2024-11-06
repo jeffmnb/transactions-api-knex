@@ -2,7 +2,7 @@ import fastify from "fastify"
 import cookie from "@fastify/cookie"
 import { transactionsRoute } from "./routes/transactionsRoutes/transactions"
 
-const app = fastify()
+export const app = fastify()
 
 app.register(cookie)
 

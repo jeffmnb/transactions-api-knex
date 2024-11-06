@@ -3,9 +3,10 @@ import "dotenv/config"
 
 const envSchema = z.object({
   DATABASE_URL: z.string(),
+  DATABASE_TEST_URL: z.string(),
   MIGRATIONS_URL: z.string(),
   NODE_ENV: z
-    .enum(["development", "staging", "production"])
+    .enum(["development", "staging", "production", "test"])
     .default("development"),
 })
 
